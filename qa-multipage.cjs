@@ -17,19 +17,19 @@ const fs=require('node:fs');
  assert.equal(await page.locator('.drawer-toggle').getAttribute('aria-pressed'),'true');
  assert.ok(await page.locator('.joinery-art').evaluate(el=>el.classList.contains('drawer-open')));
  await page.goto(base+'gallery.html',{waitUntil:'domcontentloaded'});
- assert.equal(await page.locator('.gallery-card').count(),16);
- const categoryCounts={kitchens:3,wardrobes:8,details:2,cabinetry:1,inspiration:2,all:16};
+ assert.equal(await page.locator('.gallery-card').count(),24);
+ const categoryCounts={kitchens:3,wardrobes:11,details:2,cabinetry:1,doors:2,interiors:3,inspiration:4,all:24};
  for(const [category,count] of Object.entries(categoryCounts)){
   await page.locator('[data-filter="'+category+'"]').click();
   assert.equal(await page.locator('.gallery-card:visible').count(),count);
  }
  await page.locator('.gallery-card').first().click();
- for(let i=1;i<=16;i++){
+ for(let i=1;i<=24;i++){
   const img=page.locator('#dialog-photo');
   await img.evaluate(el=>el.decode());
   assert.ok(await img.evaluate(el=>el.naturalWidth>0));
-  assert.match(await page.locator('#photo-counter').textContent(),new RegExp(String(i).padStart(2,'0')+' / 16'));
-  if(i<16)await page.keyboard.press('ArrowRight');
+  assert.match(await page.locator('#photo-counter').textContent(),new RegExp(String(i).padStart(2,'0')+' / 24'));
+  if(i<24)await page.keyboard.press('ArrowRight');
  }
  await page.keyboard.press('Escape');assert.equal(await page.locator('#project-dialog').evaluate(d=>d.open),false);
  await page.locator('[data-video="2"]').click();
@@ -68,6 +68,6 @@ const fs=require('node:fs');
  await page.setViewportSize({width:390,height:844});await page.locator('.menu-toggle').click();assert.equal(await page.locator('.menu-toggle').getAttribute('aria-expanded'),'true');assert.equal(await page.locator('#main-nav a:visible').count(),4);await page.keyboard.press('Escape');
  assert.equal(await page.evaluate(()=>document.getAnimations().length),0);
  assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);
- console.log('PASS: gallery, all 16 photo views, video playback, drawer, mobile menu, contact links, form draft, reduced motion, all page assets, 16 responsive layouts. No runtime errors or failed local requests.');
+ console.log('PASS: gallery, all 24 photo views, video playback, drawer, mobile menu, contact links, form draft, reduced motion, all page assets, 16 responsive layouts. No runtime errors or failed local requests.');
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

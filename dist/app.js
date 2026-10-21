@@ -14,7 +14,15 @@ const photos = [
  {id:13,title:'Warmth, fitted in',category:'kitchens',type:'Kitchen installation',description:'Another view of the wood-toned kitchen cabinetry during installation.'},
  {id:14,title:'From the inside out',category:'wardrobes',type:'Wardrobe interior',description:'Shelves, hanging rails and open compartments in a timber-toned fitted wardrobe.'},
  {id:15,title:'Open to possibilities',category:'wardrobes',type:'Wardrobe fitting',description:'A fitted wardrobe with its doors open to show the storage layout.'},
- {id:16,title:'A natural fit',category:'wardrobes',type:'Fitted wardrobe',description:'Timber-toned doors, dark handles and a central drawer stack.'}
+ {id:16,title:'A natural fit',category:'wardrobes',type:'Fitted wardrobe',description:'Timber-toned doors, dark handles and a central drawer stack.'},
+ {id:17,title:'A step above',category:'interiors',type:'Timber staircase',description:'Warm timber stair treads and a turned wooden balustrade, photographed in the client’s supplied interior.'},
+ {id:18,title:'The hands behind the fit',category:'wardrobes',type:'Wardrobe fitting in progress',description:'A fitter working inside a full-height wardrobe, with hanging rails, shelving and drawers visible.'},
+ {id:19,title:'Every detail, in place',category:'wardrobes',type:'Wardrobe installation',description:'Another view of the wardrobe fitting, showing the interior layout and door alignment.'},
+ {id:20,title:'Quietly complete',category:'wardrobes',type:'Finished fitted wardrobe',description:'Pale full-height wardrobe doors with slim handles, photographed alongside a timber room door.'},
+ {id:21,title:'A fresh perspective',category:'interiors',type:'Bathroom interior',description:'A client-supplied bathroom interior with a broad mirror, double washbasins and a tiled vanity surround.'},
+ {id:22,title:'A warm welcome',category:'doors',type:'Paneled timber door',description:'A warm timber entrance door and matching side panel, with recessed panel details and brass-toned hardware.'},
+ {id:23,title:'Through a warmer doorway',category:'doors',inspiration:true,type:'Door design inspiration',description:'An illustrative timber interior-door concept. AI-generated design inspiration, not a completed Tinka installation.'},
+ {id:24,title:'A room, brought together',category:'interiors',inspiration:true,type:'Interior design inspiration',description:'An illustrative living-room concept with timber media cabinetry and slatted wall detailing. AI-generated design inspiration, not a completed Tinka installation.'}
 ];
 let currentPhoto=0;
 const photoDialog=document.querySelector('#project-dialog');
@@ -22,19 +30,19 @@ const videoDialog=document.querySelector('#video-dialog');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 function photoCard(p){
  const b=document.createElement('button');b.className='gallery-card reveal';b.dataset.category=p.category;b.setAttribute('aria-label','View '+p.title+', '+p.type);
- b.innerHTML='<div class="gallery-photo"><img src="assets/image'+p.id+'.webp" alt="" loading="lazy" width="900" height="1200">'+(p.category==='inspiration'?'<span class="image-badge">DESIGN INSPIRATION</span>':'')+'<span class="project-arrow" aria-hidden="true">↗</span></div><div class="gallery-meta"><div><h3>'+p.title+'</h3><p>'+p.type+'</p></div><span>'+String(p.id).padStart(2,'0')+'</span></div>';
+ b.innerHTML='<div class="gallery-photo"><img src="assets/image'+p.id+'.webp" alt="" loading="lazy" width="900" height="1200">'+(p.category==='inspiration'||p.inspiration?'<span class="image-badge">DESIGN INSPIRATION</span>':'')+'<span class="project-arrow" aria-hidden="true">↗</span></div><div class="gallery-meta"><div><h3>'+p.title+'</h3><p>'+p.type+'</p></div><span>'+String(p.id).padStart(2,'0')+'</span></div>';
  b.querySelector('img').alt=p.type+': '+p.description;
  const image=b.querySelector('img');image.srcset='assets/image'+p.id+'-480.webp 480w, assets/image'+p.id+'-900.webp 900w, assets/image'+p.id+'.webp 1440w';image.sizes=document.body.dataset.page==='home'?'(max-width: 640px) 88vw, 28vw':'(max-width: 480px) 88vw, (max-width: 640px) 42vw, 28vw';image.decoding='async';
  b.addEventListener('click',()=>openPhoto(photos.indexOf(p)));return b;
 }
 const fullGallery=document.querySelector('[data-full-gallery]');if(fullGallery)photos.forEach(p=>fullGallery.append(photoCard(p)));
-const homeGallery=document.querySelector('[data-home-gallery]');if(homeGallery)[13,8,12].forEach(id=>homeGallery.append(photoCard(photos.find(p=>p.id===id))));
+const homeGallery=document.querySelector('[data-home-gallery]');if(homeGallery)[22,17,18].forEach(id=>homeGallery.append(photoCard(photos.find(p=>p.id===id))));
 function filterGallery(category){
  document.querySelectorAll('[data-filter]').forEach(b=>{const active=b.dataset.filter===category;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
- let count=0;document.querySelectorAll('[data-full-gallery] .gallery-card').forEach(card=>{card.hidden=category!=='all'&&card.dataset.category!==category;if(!card.hidden){count++;card.classList.add('is-visible')}});
+ let count=0;document.querySelectorAll('[data-full-gallery] .gallery-card').forEach((card,i)=>{card.hidden=category==='inspiration'?!(photos[i].inspiration||photos[i].category==='inspiration'):category!=='all'&&card.dataset.category!==category;if(!card.hidden){count++;card.classList.add('is-visible')}});
  const summary=document.querySelector('.filter-summary');if(summary)summary.textContent='Showing '+count+' '+(category==='all'?'images':category==='inspiration'?'design inspiration images':category+' images')+'. Select any image for a closer look.';
 }
-const validFilters=['all','kitchens','wardrobes','details','cabinetry','inspiration'];
+const validFilters=['all','kitchens','wardrobes','details','cabinetry','doors','interiors','inspiration'];
 const initialCategory=new URLSearchParams(location.search).get('category');if(fullGallery&&validFilters.includes(initialCategory))filterGallery(initialCategory);
 for(const button of document.querySelectorAll('[data-filter]'))button.addEventListener('click',()=>{filterGallery(button.dataset.filter);const url=new URL(location.href);if(button.dataset.filter==='all')url.searchParams.delete('category');else url.searchParams.set('category',button.dataset.filter);history.replaceState({},'',url)});
 function paintPhoto(){const p=photos[currentPhoto];document.querySelector('#dialog-title').textContent=p.title;document.querySelector('#dialog-category').textContent=p.type.toUpperCase();document.querySelector('#dialog-description').textContent=p.description;const img=document.querySelector('#dialog-photo');img.src='assets/image'+p.id+'.webp';img.alt=p.type+': '+p.description;document.querySelector('#photo-counter').textContent=String(currentPhoto+1).padStart(2,'0')+' / '+photos.length;}

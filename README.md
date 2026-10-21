@@ -14,7 +14,7 @@ The contact form creates an email draft including the visitor's name, email, opt
 
 ## Assets
 
-All 16 supplied images appear individually in the Gallery. Images 6 and 7 are labeled as design inspiration / renders. The supplied brand card appears on About. Two supplied site videos are included; video 3 displays another furniture business's watermark and phone number and remains excluded. Originals remain untouched in the parent directory.
+All 22 client-supplied images appear individually in the Gallery. Images 6 and 7 are labeled as design inspiration / renders. Images 17–22 add a staircase, wardrobe fitting, finished wardrobe, bathroom interior and paneled door. Two additional AI-generated door/interior concepts (23–24) are explicitly marked as design inspiration; they are not presented as completed client work. The supplied brand card appears on About. Two supplied site videos are included; video 3 displays another furniture business's watermark and phone number and remains excluded. Originals remain untouched in the parent directory.
 
 About includes a generated editorial carpenter illustration, presented as an illustration rather than a portrait of the owner. Home has an animated, interactive cabinet drawing. Scroll reveals, page entrances, wood shavings, a moving text strip and hover transitions respect reduced-motion preferences.
 
@@ -22,8 +22,8 @@ Project names describe visible work; no clients, dates, qualifications, testimon
 
 ## Verification
 
-Run qa-multipage.cjs with the bundled Node.js runtime while the preview is serving. It checks all four pages at 320, 390, 768 and 1440 pixels; category filters; all 16 enlarged images; dialog controls; video playback; interactive drawer; mobile navigation; call/text/WhatsApp links; email draft encoding; and reduced motion. Screenshots are saved in review/. DM Sans and Manrope are served locally, with system font fallbacks. Responsive WebP variants reduce image downloads on phones. Video cards use still-image posters; videos load only when selected. Mobile loading QA measured about 292 KB Home, 310 KB Gallery, 301 KB About and 111 KB Contact initial resource transfer at a 390-pixel viewport with 2x pixel density, before scrolling. No third-party requests or initial video downloads were observed. These byte counts are local browser measurements, not a guarantee of internet load time.
+Run qa-multipage.cjs with the bundled Node.js runtime while the preview is serving. It checks all four pages at 320, 390, 768 and 1440 pixels; category filters; all 24 enlarged images; dialog controls; video playback; interactive drawer; mobile navigation; call/text/WhatsApp links; email draft encoding; and reduced motion. Screenshots are saved in review/. DM Sans and Manrope are served locally, with system font fallbacks. Responsive WebP variants reduce image downloads on phones. Video cards use still-image posters; videos load only when selected. Mobile loading QA measured about 292 KB Home, 310 KB Gallery, 301 KB About and 111 KB Contact initial resource transfer at a 390-pixel viewport with 2x pixel density, before scrolling. No third-party requests or initial video downloads were observed. These byte counts are local browser measurements, not a guarantee of internet load time.
 
 ## Publication
 
-Sites identity is recorded in `.openai/hosting.json`. Publication was blocked by automatic approval review pending explicit user authorization to upload the source and supplied media to external hosting. No successful deployment has been confirmed.
+The site is hosted at https://tinkerfittings.vercel.app. The root vercel.json points Vercel to dist, with no installation or build command. Pushing the connected main branch triggers deployment. The original Sites identity remains in .openai/hosting.json for reference.
